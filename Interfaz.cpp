@@ -7,23 +7,39 @@
 #include "Interfaz.h"
 
 void Interfaz::imprimirInterfaz(motor a, motor b){
-  Serial.println("Interfaz para el control del robot IRON PLANT (v 0.1). A continuación");
-  Serial.println("se muestran los valores disponibles: ");
+  Serial.println("Interfaz para el control del robot IRON PLANT (v 1.1). A continuación");
+  Serial.println("se  muestran   los   diferentes  parámetros  disponibles.   Para   la");
+  Serial.println("de  los  valores  mostrados  introducir  en  la  linea de  entrada el");
+  Serial.println("($,A)=VALOR. ");
   Serial.println();
-  Serial.print  (" - V1 (Velocidad del motor 1) = "); a.imprimirVel();
-  Serial.print  (" - A1 (Avance del motor 1)    = "); a.imprimirAv();
-  Serial.print  (" - P1 (Posicion del motor 1)  = "); a.imprimirFeedback();
-  Serial.print  (" - V2 (Velocidad del motor 2) = "); b.imprimirVel();
-  Serial.print  (" - T2 (Angulo del motor 2)    = "); b.imprimirFeedback();
+  Serial.println("TAREAS:");
+  Serial.println(" - $1: Regar");
+  Serial.println(" - $2: Sembrar");
+  Serial.println(" - $3: Arar");
+  Serial.println(" - $4: Cortar");
+  Serial.println(" - $5: Demo");
+  Serial.println(" - $6: Activar Luces");
+  Serial.println(" - $7: Parada");
   Serial.println();
-  Serial.println("Para la modificacion de los valores mostrados introducir en la  linea de");
-  Serial.println("entrada el formato (V,A)=VALOR. A continuación se  muestran más comandos");
-  Serial.println("disponibles: ");
+  Serial.println("TAREAS AVANZADAS:");
+  Serial.println(" - $11: Mover eje x");
+  Serial.println(" - $12: Mover eje R1");
+  Serial.println(" - $13: Mover eje R2");
+  Serial.println(" - $14: Mover eje R3");
+  Serial.println(" - $15: Mover herramienta");
+  Serial.println(" - $16: Ir a posicion (x, y, z)");
+  Serial.println(" - $17: Ir a posicion (x, y)");
+  Serial.println(" - $20: Cambiar herramienta");
   Serial.println();
-  Serial.println(" - R  (Establece el home en el sitio)");
-  Serial.println(" - C  (Para introducir una coordenada de la forma C=VALOR)");
-  Serial.println();
-  //Serial.println("I  (Para mostrar la interfaz de nuevo)");
+  Serial.println("CONFIGURACION:");
+  Serial.println(" - $31: Velocidad motor 1 = ");
+  Serial.print  (a.imprimirVel());
+  Serial.println(" - $32: Velocidad motor 2 = ");
+  Serial.print  (b.imprimirVel());
+  Serial.println(" - $33: Velocidad motor 3 = ");
+  Serial.print  ();                                                                           //INTRODUCIR VELOCIDAD DE MOTOR 3 CUANDO SE INCLUYA EN LA INTERFAZ
+  Serial.println(" - $34: Avance del motor 1 = ");
+  Serial.print  (a.imprimirAv());
 }
 
 void Interfaz::interaccionInterfaz(motor a, motor b){
