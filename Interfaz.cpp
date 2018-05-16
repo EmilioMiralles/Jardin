@@ -79,3 +79,45 @@ coordenadas Interfaz::getPosicion(motor a, motor b, motor c){
   return posicion;
 }
 
+
+referencia Interfaz::cinInversa (float x, float y, float z){
+  float Theta1, Theta2;
+  float Alpha1, Alpha2;     //Los angulos theta representaran los resultados positivos de la ecuacion y los alpha los negativos
+                            //Se tomará como óptimo el ángulo del primero brazo(Theta1 o Alpha1) que sea mayor;
+
+  float q2;
+  float y_r = y - 100;
+  float z_r = z - 163;
+
+  float qa = ((y_r*y_r + z_r*z_r - L1*L1 - L2*L2) / 2*L1*L2);         // Se usa una variable auxiliar qa que representa cos(q2)
+
+  Theta2 = atan2(sqrt(1-pow(qa,2)) / qa);
+  Alpha2 = atan2(-sqrt(1-pow(qa,2)) / qa);
+
+  if (Theta2 => Alpha2){
+    q2 = Theta2 - pi/2;
+
+    Theta1 = atan2(z_r / y_r) - atan2((L2*sin(q2) / (L1 + L2*cos(q2)));
+
+    ref.Rx = x;
+    ref.Ang1 = Theta1 * 180 / pi;
+    ref.Ang2 = q2 * 180 / pi;
+    ref.Ang3 = Theta1 *180 / pi - Theta2 * 180 / pi -90;
+
+    return ref;
+  }
+
+  else if (Theta2 < Alha2){
+    q2 = Alpha2 - pi/2;
+
+    Alpha1 = atan2(z_r / y_r) - atan2((L2*sin(q2) / (L1 + L2*cos(q2)));
+
+    ref.Rx = x;
+    ref.Ang1 = Alpha1 * 180 / pi;
+    ref.Ang2 = q2 * 180 / pi;
+    ref.Ang3 = Alpha1 *180 / pi - Alpha2 * 180 / pi -90;
+
+    return ref;
+  }
+}
+
