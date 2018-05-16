@@ -1,0 +1,6 @@
+encoder	KEYWORD1
+setPin	KEYWORD2
+setBandera	KEYWORD2
+contadorMemoria	KEYWORD2
+reset	KEYWORD2
+imprimir	KEYWORD2
