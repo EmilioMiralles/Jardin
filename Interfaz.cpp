@@ -11,7 +11,7 @@ void Interfaz::imprimirInterfaz(motor a, motor b){
   Serial.println("se  muestran   los   diferentes  parámetros  disponibles.   Para   la");
   Serial.println("de  los  valores  mostrados  introducir  en  la  linea de  entrada el");
   Serial.println("($,A)=VALOR. ");
-  Serial.println();
+  Serial.println("");
   Serial.println("TAREAS:");
   Serial.println(" - $1: Regar");
   Serial.println(" - $2: Sembrar");
@@ -20,7 +20,7 @@ void Interfaz::imprimirInterfaz(motor a, motor b){
   Serial.println(" - $5: Demo");
   Serial.println(" - $6: Activar Luces");
   Serial.println(" - $7: Parada");
-  Serial.println();
+  Serial.println("");
   Serial.println("TAREAS AVANZADAS:");
   Serial.println(" - $11: Mover eje x");
   Serial.println(" - $12: Mover eje R1");
@@ -30,16 +30,13 @@ void Interfaz::imprimirInterfaz(motor a, motor b){
   Serial.println(" - $16: Ir a posicion (x, y, z)");
   Serial.println(" - $17: Ir a posicion (x, y)");
   Serial.println(" - $20: Cambiar herramienta");
-  Serial.println();
+  Serial.println("");
   Serial.println("CONFIGURACION:");
-  Serial.println(" - $31: Velocidad motor 1 = ");
-  Serial.print  (a.imprimirVel());
-  Serial.println(" - $32: Velocidad motor 2 = ");
-  Serial.print  (b.imprimirVel());
-  Serial.println(" - $33: Velocidad motor 3 = ");
-  Serial.print  ();                                                                           //INTRODUCIR VELOCIDAD DE MOTOR 3 CUANDO SE INCLUYA EN LA INTERFAZ
-  Serial.println(" - $34: Avance del motor 1 = ");
-  Serial.print  (a.imprimirAv());
+  Serial.print  (" - $31: Velocidad motor 1 = ");   a.imprimirVel();
+  Serial.print  (" - $32: Velocidad motor 2 = ");   b.imprimirVel();
+  Serial.print  (" - $33: Velocidad motor 3 = ");
+  Serial.println("");                                                                           //INTRODUCIR VELOCIDAD DE MOTOR 3 CUANDO SE INCLUYA EN LA INTERFAZ
+  Serial.print  (" - $34: Avance del motor 1 = ");  a.imprimirAv();
 }
 
 void Interfaz::interaccionInterfaz(motor a, motor b){
@@ -107,13 +104,13 @@ referencia Interfaz::cinInversa (float x, float y, float z){
 
   float qa = ((y_r*y_r + z_r*z_r - L1*L1 - L2*L2) / 2*L1*L2);         // Se usa una variable auxiliar qa que representa cos(q2)
 
-  Theta2 = atan2(sqrt(1-pow(qa,2)) / qa);
-  Alpha2 = atan2(-sqrt(1-pow(qa,2)) / qa);
+  Theta2 = atan2(sqrt(1-pow(qa,2)) , qa);
+  Alpha2 = atan2(-sqrt(1-pow(qa,2)) , qa);
 
-  if (Theta2 => Alpha2){
+  if (Theta2 >= Alpha2){
     q2 = Theta2 - pi/2;
 
-    Theta1 = atan2(z_r / y_r) - atan2((L2*sin(q2) / (L1 + L2*cos(q2)));
+    Theta1 = atan2(z_r , y_r) - atan2(L2*sin(q2) , (L1 + L2*cos(q2)));
 
     ref.Rx = x;
     ref.Ang1 = Theta1 * 180 / pi;
@@ -123,10 +120,10 @@ referencia Interfaz::cinInversa (float x, float y, float z){
     return ref;
   }
 
-  else if (Theta2 < Alha2){
+  else if (Theta2 < Alpha2){
     q2 = Alpha2 - pi/2;
 
-    Alpha1 = atan2(z_r / y_r) - atan2((L2*sin(q2) / (L1 + L2*cos(q2)));
+    Alpha1 = atan2(z_r , y_r) - atan2(L2*sin(q2) , (L1 + L2*cos(q2)));
 
     ref.Rx = x;
     ref.Ang1 = Alpha1 * 180 / pi;
