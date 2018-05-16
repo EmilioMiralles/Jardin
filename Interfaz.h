@@ -6,6 +6,8 @@
 #ifndef INTERFAZ_H
 #define INTERFAZ_H
 
+#define pi 3.1416
+
 #include "Arduino.h"
 #include "Motor.h"
 #include "Math.h"
@@ -25,7 +27,7 @@ struct referencia{
   float Ang1;
   float Ang2;
   float Ang3;
-}
+};
 
 class Interfaz{
 private:
