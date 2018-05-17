@@ -16,6 +16,8 @@
 #define L2 200
 #define L3 100
 
+#define DISTJARDIN  190
+
 struct coordenadas{
   float x;
   float y;
@@ -33,13 +35,20 @@ class Interfaz{
 private:
   coordenadas posicion;     //Actualmente la coordenada se trata de un único dato puesto que se está modelando un unico motor
                             //Más adelante se podrá modificar esta variable de forma que coordenadas se trate de una estructura de 3 coordenadas
+  coordenadas posicion_final;
   referencia ref;
-public:
-  void imprimirInterfaz(motor a, motor b);
-  void interaccionInterfaz(motor a, motor b);
-  coordenadas getPosicion(motor a, motor b, motor c);
-  referencia cinInversa(float x, float y, float z);
   
+  coordenadas p[2];         //Puntos del movimiento que se tomarán en la trayectoria entre dos puntos.
+  int bandera[3];           //Indica en que posicion se encuentra dentro de la trayectoria. LA BANDERA 3 INDICA QUE ESTÁ EN LA POSICION DESEADA
+public:
+  void imprimirInterfaz(motor a, motor b);          //Imprime la interfaz
+  void interaccionInterfaz(motor a, motor b);       //Lee los datos introducidos por Serial
+  
+  coordenadas getPosicion(motor a, motor b, motor c);
+  referencia cinInversa(coordenadas coor);
+
+  void Trayectoria(motor a, motor b, motor c);
+  bool mismonivel(float y);
 };
   
 #endif
