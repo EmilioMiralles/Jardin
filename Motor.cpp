@@ -46,15 +46,19 @@ void motor::setVelocidad(int a){
   analogWrite(pin_pwm, velocidad);
 }
 
-void motor::avanzar(bool i){
-  if (i){
+void motor::avanzar(){
     digitalWrite(pin_at, LOW);
     digitalWrite(pin_ad, HIGH);
-  }
-  else if(!i){
-    digitalWrite(pin_at, HIGH);
-    digitalWrite(pin_ad, LOW);
-  }
+}
+
+void motor::retroceder(){
+  digitalWrite(pin_at, HIGH);
+  digitalWrite(pin_ad, LOW);
+}
+
+void motor::parar(){
+  digitalWrite(pin_at, LOW);
+  digitalWrite(pin_at, LOW);
 }
 
 void motor::imprimirFeedback(){
