@@ -40,14 +40,19 @@ private:
   
   coordenadas p[2];         //Puntos del movimiento que se tomarán en la trayectoria entre dos puntos.
   int bandera[3];           //Indica en que posicion se encuentra dentro de la trayectoria. LA BANDERA 3 INDICA QUE ESTÁ EN LA POSICION DESEADA
+
+  motor m1;                 //Motor que mueve la parte cartesiana del robot
+  motor m2;                 //Motor que mueve la primera articulacion del robot
+  motor m3;                 //Motor que miueve la segunda articulacion del robot
 public:
-  void imprimirInterfaz(motor a, motor b);          //Imprime la interfaz
-  void interaccionInterfaz(motor a, motor b);       //Lee los datos introducidos por Serial
+  void imprimirInterfaz();          //Imprime la interfaz
+  void interaccionInterfaz();       //Lee los datos introducidos por Serial
+  void inicializar();
   
-  coordenadas getPosicion(motor a, motor b, motor c);
+  coordenadas getPosicion();
   referencia cinInversa(coordenadas coor);
 
-  void Trayectoria(motor a, motor b, motor c);
+  void Trayectoria();
   bool mismonivel(float y);
 };
   

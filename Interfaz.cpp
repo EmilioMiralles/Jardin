@@ -6,7 +6,7 @@
 #include "Arduino.h"
 #include "Interfaz.h"
 
-void Interfaz::imprimirInterfaz(motor a, motor b){
+void Interfaz::imprimirInterfaz(){
   Serial.println("Interfaz para el control del robot IRON PLANT (v 1.1). A continuación");
   Serial.println("se  muestran   los   diferentes  parámetros  disponibles.   Para   la");
   Serial.println("de  los  valores  mostrados  introducir  en  la  linea de  entrada el");
@@ -32,19 +32,18 @@ void Interfaz::imprimirInterfaz(motor a, motor b){
   Serial.println(" - $20: Cambiar herramienta");
   Serial.println("");
   Serial.println("CONFIGURACION:");
-  Serial.print  (" - $31: Velocidad motor 1 = ");   a.imprimirVel();
-  Serial.print  (" - $32: Velocidad motor 2 = ");   b.imprimirVel();
-  Serial.print  (" - $33: Velocidad motor 3 = ");
-  Serial.println("");                                                                           //INTRODUCIR VELOCIDAD DE MOTOR 3 CUANDO SE INCLUYA EN LA INTERFAZ
-  Serial.print  (" - $34: Avance del motor 1 = ");  a.imprimirAv();
+  Serial.print  (" - $31: Velocidad motor 1 = ");   m1.imprimirVel();
+  Serial.print  (" - $32: Velocidad motor 2 = ");   m2.imprimirVel();
+  Serial.print  (" - $33: Velocidad motor 3 = ");   m3.imprimirVel();
+  Serial.print  (" - $34: Avance del motor 1 = ");  m1.imprimirAv();
 }
 
-void Interfaz::interaccionInterfaz(motor a, motor b){
+void Interfaz::interaccionInterfaz(){
   if(Serial.available() > 0){
       char pal = Serial.read();
       int v = Serial.parseInt();
   
-      switch(pal){
+      /*switch(pal){
         case 'v':
         case 'V':  a.setVelocidad(v);
                    Serial.print("La velocidad se ha establecido en:  ");
@@ -63,11 +62,11 @@ void Interfaz::interaccionInterfaz(motor a, motor b){
                    Serial.println("La posición actual se ha establecido como home.");
                    Serial.println();
                    break;
-        /*case 'c':
+        case 'c':
         case 'C':  coordenadas = v;
                    Serial.println("Coordenadas actualizadas");
                    Serial.println();
-                   break;*/
+                   break;
         case 'p':   
         case 'P':  Serial.print("La memoria y las vueltas del encoder son:  ");
                    a.encod.imprimir();
@@ -80,16 +79,16 @@ void Interfaz::interaccionInterfaz(motor a, motor b){
                    break;
         default:   Serial.println("ERROR. El comando introducido no es correcto.");
                    Serial.println();
-      }
+      }*/
     }
 }
 
-coordenadas Interfaz::getPosicion(motor a, motor b, motor c){
+coordenadas Interfaz::getPosicion(){
   coordenadas pos;
   
-  pos.x = a.getFeedback();
-  pos.y = L1*cos(b.getFeedback()) + L2*cos(b.getFeedback()+c.getFeedback()-90) + L3;
-  pos.z = L1*sin(b.getFeedback()) + L2*sin(b.getFeedback()+c.getFeedback()-90) + 163;
+  pos.x = m1.getFeedback();
+  pos.y = L1*cos(m2.getFeedback()) + L2*cos(m2.getFeedback()+m3.getFeedback()-90) + L3;
+  pos.z = L1*sin(m2.getFeedback()) + L2*sin(m2.getFeedback()+m3.getFeedback()-90) + 163;
 
   return pos;
 }
@@ -138,7 +137,7 @@ referencia Interfaz::cinInversa (coordenadas coord){
   }
 }
 
-void Interfaz::Trayectoria(motor a, motor b, motor c){ 
+void Interfaz::Trayectoria(){ 
   if (Interfaz::mismonivel(posicion_final.y)) {
     p[0]=p[1]=p[2]=posicion;
   }
@@ -182,5 +181,19 @@ bool Interfaz::mismonivel(float y){
   else {
     return true;
   }
+}
+
+void Interfaz::inicializar(){
+  m1.setTipo(false);
+  m1.setPines(22,23,2);       //pines del primer motor
+  m1.setVelocidad(90);        //Señal PWM transmitida al controlador L298N
+  m1.setAvance(44);           //Seteamos el avance del motor en una vuelta para calcular la posicion
+  m1.encod.setPin(A0);        //Pin del sensor del encoder
+  m1.encod.setBandera();
+  m2.setTipo(true);
+  m2.setPines(24,25,3);
+  m2.setVelocidad(120);
+  m2.pot.setpin(A1);
+  m2.pot.setLimites(0, 1023);
 }
 
