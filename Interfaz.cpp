@@ -209,7 +209,7 @@ void Interfaz::inicializar(){
 
 void Interfaz::mueve(){
 
-  referencia p_o = Interfaz::getFeedback(m1, m2, m3);
+  referencia p_o = Interfaz::getFeedback();
   referencia p_f;
 
   bool b1, b2, b3;
@@ -217,19 +217,19 @@ void Interfaz::mueve(){
   if ((!bandera[0]) && (!bandera[1])){
     p_f = Interfaz::cinInversa(p[1]);
     
-    Interfaz::calculoVelocidades(p_o, p_f, m1, m2, m3);
+    //Interfaz::calculoVelocidades(p_o, p_f, m1, m2, m3);
 
-    if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanza();    b1=false;}
-    else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retrocede(); b1=false;}
-    else if ((p_o.Rx >= p_f.Rx(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))   {m1.parar();     b1=true;}
+    if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanzar();    b1=false;}
+    else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retroceder(); b1=false;}
+    else if ((p_o.Rx >= p_f.Rx*(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))   {m1.parar();     b1=true;}
 
-    if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {m2.avanza();    b2=false;}
-    else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {m2.retrocede(); b2=false;}
-    else if ((p_o.Ang1 >= p_f.Ang1(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))   {m2.parar();     b2=true;}
+    if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {m2.avanzar();    b2=false;}
+    else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {m2.retroceder(); b2=false;}
+    else if ((p_o.Ang1 >= p_f.Ang1*(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))   {m2.parar();     b2=true;}
 
-    if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {m3.avanza();    b3=false;}
-    else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {m3.retrocede(); b3=false;}
-    else if ((p_o.Ang2 >= p_f.Ang2(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))   {m3.parar();     b3=true;}
+    if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {m3.avanzar();    b3=false;}
+    else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {m3.retroceder(); b3=false;}
+    else if ((p_o.Ang2 >= p_f.Ang2*(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))   {m3.parar();     b3=true;}
 
     if((b1)&&(b2)&&(b3)){
       bandera[0]=false;
@@ -240,19 +240,19 @@ void Interfaz::mueve(){
   else if ((!bandera[0]) && (bandera[1])){
     p_f = Interfaz::cinInversa(p[2]);
     
-    Interfaz::calculoVelocidades(p_o, p_f, m1, m2, m3);
+    //Interfaz::calculoVelocidades(p_o, p_f, m1, m2, m3);
 
-    if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanza();    b1=false;}
-    else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retrocede(); b1=false;}
-    else if ((p_o.Rx >= p_f.Rx(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))   {m1.parar();     b1=true;}
+    if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanzar();    b1=false;}
+    else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retroceder(); b1=false;}
+    else if ((p_o.Rx >= p_f.Rx*(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))   {m1.parar();     b1=true;}
 
-    if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {m2.avanza();    b2=false;}
-    else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {m2.retrocede(); b2=false;}
-    else if ((p_o.Ang1 >= p_f.Ang1(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))   {m2.parar();     b2=true;}
+    if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {m2.avanzar();    b2=false;}
+    else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {m2.retroceder(); b2=false;}
+    else if ((p_o.Ang1 >= p_f.Ang1*(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))   {m2.parar();     b2=true;}
 
-    if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {m3.avanza();    b3=false;}
-    else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {m3.retrocede(); b3=false;}
-    else if ((p_o.Ang2 >= p_f.Ang2(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))   {m3.parar();     b3=true;}
+    if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {m3.avanzar();    b3=false;}
+    else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {m3.retroceder(); b3=false;}
+    else if ((p_o.Ang2 >= p_f.Ang2*(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))   {m3.parar();     b3=true;}
 
     if((b1)&&(b2)&&(b3)){
       bandera[0]=true;
@@ -263,19 +263,19 @@ void Interfaz::mueve(){
   else if ((bandera[0]) && (!bandera[1])){
     p_f = Interfaz::cinInversa(posicion_final);
     
-    Interfaz::calculoVelocidades(p_o, p_f, m1, m2, m3);
+    //Interfaz::calculoVelocidades(p_o, p_f, m1, m2, m3);
 
-    if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanza();    b1=false;}
-    else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retrocede(); b1=false;}
-    else if ((p_o.Rx >= p_f.Rx(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))   {m1.parar();     b1=true;}
+    if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanzar();    b1=false;}
+    else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retroceder(); b1=false;}
+    else if ((p_o.Rx >= p_f.Rx*(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))   {m1.parar();     b1=true;}
 
-    if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {m2.avanza();    b2=false;}
-    else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {m2.retrocede(); b2=false;}
-    else if ((p_o.Ang1 >= p_f.Ang1(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))   {m2.parar();     b2=true;}
+    if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {m2.avanzar();    b2=false;}
+    else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {m2.retroceder(); b2=false;}
+    else if ((p_o.Ang1 >= p_f.Ang1*(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))   {m2.parar();     b2=true;}
 
-    if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {m3.avanza();    b3=false;}
-    else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {m3.retrocede(); b3=false;}
-    else if ((p_o.Ang2 >= p_f.Ang2(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))   {m3.parar();     b3=true;}
+    if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {m3.avanzar();    b3=false;}
+    else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {m3.retroceder(); b3=false;}
+    else if ((p_o.Ang2 >= p_f.Ang2*(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))   {m3.parar();     b3=true;}
 
     if((b1)&&(b2)&&(b3)){
       bandera[0]=true;
