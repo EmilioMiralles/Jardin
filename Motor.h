@@ -29,7 +29,9 @@ public:
   void setAvance(float a);      //El valor que introduciremos de a será el valor del avance del motor por 1 vuelta
   float getFeedback();           //En milimetros
   void setVelocidad(int a);
-  void avanzar(bool i);          //Si i es 1 el motor avanza y si i es 0 el motor retrocede
+  void avanzar();
+  void retroceder();
+  void parar();
   void imprimirFeedback();
   void imprimirVel();
   void imprimirAv();
