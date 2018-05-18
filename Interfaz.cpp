@@ -39,33 +39,49 @@ void Interfaz::imprimirInterfaz(motor a, motor b){
   Serial.print  (" - $34: Avance del motor 1 = ");  a.imprimirAv();
 }
 
-void Interfaz::interaccionInterfaz(motor a, motor b, motor c){
+void Interfaz::interaccionInterfaz(motor a, motor b){
   if(Serial.available() > 0){
       char pal = Serial.read();
       int v = Serial.parseInt();
   
-  if (pal == '$')
-
-      switch(v){
-        case v = 1: REGAR; break;
-        case v = 2: SEMBRAR; break;
-        case v = 3: ARAR; break;
-        case v = 4: CORTAR; break;
-        case v = 5: DEMO; break;
-        case v = 6: LUCES; break;
-        case v = 7: REARME/PARADA; break;
-        case v = 10: MOVER; break; 
-        case v = 11: MOVER X; break; a.avanzar();
-        case v = 12: ROTAR R1; break;
-        case v = 13: ROTAR R2; break;
-        case v = 14: ROTAR R3; break;
-        case v = 15: GIRAR TOOL; break;
-        case v = 16: IR A POSICION (X,Y,Z); break;
-        case v = 17: IR A POSICION (X,Y); break;
-        case v = 20: CAMBIAR TOOL; break;
-        case v = 30: VELOCIDAD MOTORES; break;
-        }
-  
+      switch(pal){
+        case 'v':
+        case 'V':  a.setVelocidad(v);
+                   Serial.print("La velocidad se ha establecido en:  ");
+                   a.imprimirVel();
+                   Serial.println();
+                   break;
+        case 'a':
+        case 'A':  a.setAvance(v);
+                   Serial.print("El avance del motor se ha establecido en ");
+                   a.imprimirAv();
+                   Serial.println();
+                   break;
+        case 'r':
+        case 'R':  a.encod.reset();
+                   a.getFeedback();
+                   Serial.println("La posición actual se ha establecido como home.");
+                   Serial.println();
+                   break;
+        /*case 'c':
+        case 'C':  coordenadas = v;
+                   Serial.println("Coordenadas actualizadas");
+                   Serial.println();
+                   break;*/
+        case 'p':   
+        case 'P':  Serial.print("La memoria y las vueltas del encoder son:  ");
+                   a.encod.imprimir();
+                   Serial.print("Y, por tanto, la posición es:  ");
+                   a.imprimirFeedback();
+                   Serial.println();
+                   break;
+        case 't':
+        case 'T':  imprimirInterfaz(a, b);
+                   break;
+        default:   Serial.println("ERROR. El comando introducido no es correcto.");
+                   Serial.println();
+      }
+    }
 }
 
 coordenadas Interfaz::getPosicion(motor a, motor b, motor c){

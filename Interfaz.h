@@ -36,7 +36,7 @@ private:
   referencia ref;
 public:
   void imprimirInterfaz(motor a, motor b);
-  void interaccionInterfaz(motor a, motor b, motor c);
+  void interaccionInterfaz(motor a, motor b);
   coordenadas getPosicion(motor a, motor b, motor c);
   referencia cinInversa(float x, float y, float z);
   
