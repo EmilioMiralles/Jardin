@@ -148,7 +148,7 @@ void Interfaz::Trayectoria(motor a, motor b, motor c){
     p[1] = p[0];
     p[1].z = p[0].z + 150;
     p[2] = p[1];
-    p[2].z = p[1].z - 90;
+    p[2].z = p[1].z - 50;
     p[2].y = posicion_final.y;
   }
 }
