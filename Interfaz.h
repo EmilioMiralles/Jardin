@@ -39,16 +39,21 @@ private:
   referencia ref;
   
   coordenadas p[2];         //Puntos del movimiento que se tomarán en la trayectoria entre dos puntos.
-  int bandera[3];           //Indica en que posicion se encuentra dentro de la trayectoria. LA BANDERA 3 INDICA QUE ESTÁ EN LA POSICION DESEADA
+  int bandera[1];           //Indica en que posicion se encuentra dentro de la trayectoria. Los valores (0, 0) , (0, 1) , (1, 0) y (1, 1) indican la posicion de la que parten en la trayectoria
+
+  float margen = 0.05;      //Margen de error para que se alcance la posicion
 public:
   void imprimirInterfaz(motor a, motor b);          //Imprime la interfaz
   void interaccionInterfaz(motor a, motor b);       //Lee los datos introducidos por Serial
   
   coordenadas getPosicion(motor a, motor b, motor c);
+  referencia getFeedback(motor a, motor b, motor c);
   referencia cinInversa(coordenadas coor);
 
   void Trayectoria(motor a, motor b, motor c);
   bool mismonivel(float y);
+
+  void mueve(motor a, motor b, motor c);
 };
   
 #endif

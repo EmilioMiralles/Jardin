@@ -94,6 +94,16 @@ coordenadas Interfaz::getPosicion(motor a, motor b, motor c){
   return pos;
 }
 
+referencia Interfaz::getFeedback(motor a, motor b, motor c){
+  referencia refe;
+
+  refe.Rx = a.getFeedback();
+  refe.Ang1 = b.getFeedback();
+  refe.Ang2 = c.getFeedback();
+  refe.Ang3 = 0;                      //MODIFICAR LO QUE SE OBTIENE CUANDO SE IMPLEMENTE EL SERVOMOTOR
+
+  return refe;
+}
 
 referencia Interfaz::cinInversa (coordenadas coord){
   float Theta1, Theta2;
@@ -181,6 +191,84 @@ bool Interfaz::mismonivel(float y){
   }
   else {
     return true;
+  }
+}
+
+
+void Interfaz::mueve(motor a, motor b, motor c){
+
+  referencia p_o = Interfaz::getFeedback(a, b, c);
+  referencia p_f;
+
+  bool b1, b2, b3;
+
+  if ((!bandera[0]) && (!bandera[1])){
+    p_f = Interfaz::cinInversa(p[1]);
+    
+    Interfaz::calculoVelocidades(p_o, p_f, a, b, c);
+
+    if(p_o.Rx < p_f.Rx*(1-margen))                                            {a.avanza();    b1=false;}
+    else if (p_o.Rx > p_f.Rx*(1+margen))                                      {a.retrocede(); b1=false;}
+    else if ((p_o.Rx >= p_f.Rx(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))   {a.parar();     b1=true;}
+
+    if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {b.avanza();    b2=false;}
+    else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {b.retrocede(); b2=false;}
+    else if ((p_o.Ang1 >= p_f.Ang1(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))   {b.parar();     b2=true;}
+
+    if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {c.avanza();    b3=false;}
+    else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {c.retrocede(); b3=false;}
+    else if ((p_o.Ang2 >= p_f.Ang2(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))   {c.parar();     b3=true;}
+
+    if((b1)&&(b2)&&(b3)){
+      bandera[0]=false;
+      bandera[1]=true;
+    }
+  }
+
+  else if ((!bandera[0]) && (bandera[1])){
+    p_f = Interfaz::cinInversa(p[2]);
+    
+    Interfaz::calculoVelocidades(p_o, p_f, a, b, c);
+
+    if(p_o.Rx < p_f.Rx*(1-margen))                                            {a.avanza();    b1=false;}
+    else if (p_o.Rx > p_f.Rx*(1+margen))                                      {a.retrocede(); b1=false;}
+    else if ((p_o.Rx >= p_f.Rx(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))   {a.parar();     b1=true;}
+
+    if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {b.avanza();    b2=false;}
+    else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {b.retrocede(); b2=false;}
+    else if ((p_o.Ang1 >= p_f.Ang1(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))   {b.parar();     b2=true;}
+
+    if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {c.avanza();    b3=false;}
+    else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {c.retrocede(); b3=false;}
+    else if ((p_o.Ang2 >= p_f.Ang2(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))   {c.parar();     b3=true;}
+
+    if((b1)&&(b2)&&(b3)){
+      bandera[0]=true;
+      bandera[1]=false;
+    }
+  }
+
+  else if ((bandera[0]) && (!bandera[1])){
+    p_f = Interfaz::cinInversa(posicion_final);
+    
+    Interfaz::calculoVelocidades(p_o, p_f, a, b, c);
+
+    if(p_o.Rx < p_f.Rx*(1-margen))                                            {a.avanza();    b1=false;}
+    else if (p_o.Rx > p_f.Rx*(1+margen))                                      {a.retrocede(); b1=false;}
+    else if ((p_o.Rx >= p_f.Rx(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))   {a.parar();     b1=true;}
+
+    if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {b.avanza();    b2=false;}
+    else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {b.retrocede(); b2=false;}
+    else if ((p_o.Ang1 >= p_f.Ang1(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))   {b.parar();     b2=true;}
+
+    if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {c.avanza();    b3=false;}
+    else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {c.retrocede(); b3=false;}
+    else if ((p_o.Ang2 >= p_f.Ang2(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))   {c.parar();     b3=true;}
+
+    if((b1)&&(b2)&&(b3)){
+      bandera[0]=true;
+      bandera[1]=true;
+    }
   }
 }
 
