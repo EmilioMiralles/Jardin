@@ -85,22 +85,26 @@ void Interfaz::interaccionInterfaz(motor a, motor b){
 }
 
 coordenadas Interfaz::getPosicion(motor a, motor b, motor c){
-  posicion.x = a.getFeedback();
-  posicion.y = L1*cos(b.getFeedback()) + L2*cos(b.getFeedback()+c.getFeedback()-90) + L3;
-  posicion.z = L1*sin(b.getFeedback()) + L2*sin(b.getFeedback()+c.getFeedback()-90) + 163;
+  coordenadas pos;
+  
+  pos.x = a.getFeedback();
+  pos.y = L1*cos(b.getFeedback()) + L2*cos(b.getFeedback()+c.getFeedback()-90) + L3;
+  pos.z = L1*sin(b.getFeedback()) + L2*sin(b.getFeedback()+c.getFeedback()-90) + 163;
 
-  return posicion;
+  return pos;
 }
 
 
-referencia Interfaz::cinInversa (float x, float y, float z){
+referencia Interfaz::cinInversa (coordenadas coord){
   float Theta1, Theta2;
   float Alpha1, Alpha2;     //Los angulos theta representaran los resultados positivos de la ecuacion y los alpha los negativos
                             //Se tomará como óptimo el ángulo del primero brazo(Theta1 o Alpha1) que sea mayor;
 
+  referencia refe;
+  
   float q2;
-  float y_r = y - 100;
-  float z_r = z - 163;
+  float y_r = coord.y - 100;
+  float z_r = coord.z - 163;
 
   float qa = ((y_r*y_r + z_r*z_r - L1*L1 - L2*L2) / 2*L1*L2);         // Se usa una variable auxiliar qa que representa cos(q2)
 
@@ -112,12 +116,12 @@ referencia Interfaz::cinInversa (float x, float y, float z){
 
     Theta1 = atan2(z_r , y_r) - atan2(L2*sin(q2) , (L1 + L2*cos(q2)));
 
-    ref.Rx = x;
-    ref.Ang1 = Theta1 * 180 / pi;
-    ref.Ang2 = q2 * 180 / pi;
-    ref.Ang3 = Theta1 *180 / pi - Theta2 * 180 / pi -90;
+    refe.Rx = coord.x;
+    refe.Ang1 = Theta1 * 180 / pi;
+    refe.Ang2 = q2 * 180 / pi;
+    refe.Ang3 = Theta1 *180 / pi - Theta2 * 180 / pi -90;
 
-    return ref;
+    return refe;
   }
 
   else if (Theta2 < Alpha2){
@@ -125,12 +129,58 @@ referencia Interfaz::cinInversa (float x, float y, float z){
 
     Alpha1 = atan2(z_r , y_r) - atan2(L2*sin(q2) , (L1 + L2*cos(q2)));
 
-    ref.Rx = x;
-    ref.Ang1 = Alpha1 * 180 / pi;
-    ref.Ang2 = q2 * 180 / pi;
-    ref.Ang3 = Alpha1 *180 / pi - Alpha2 * 180 / pi -90;
+    refe.Rx = coord.x;
+    refe.Ang1 = Alpha1 * 180 / pi;
+    refe.Ang2 = q2 * 180 / pi;
+    refe.Ang3 = Alpha1 *180 / pi - Alpha2 * 180 / pi -90;
 
-    return ref;
+    return refe;
+  }
+}
+
+void Interfaz::Trayectoria(motor a, motor b, motor c){ 
+  if (Interfaz::mismonivel(posicion_final.y)) {
+    p[0]=p[1]=p[2]=posicion;
+  }
+
+  else if(!(Interfaz::mismonivel(posicion_final.y))) {
+    p[0] = posicion;
+    p[1] = p[0];
+    p[1].z = p[0].z + 150;
+    p[2] = p[1];
+    p[2].z = p[1].z - 50;
+    p[2].y = posicion_final.y;
+  }
+}
+
+
+bool Interfaz::mismonivel(float y){
+  if ((posicion.y >= DISTJARDIN) && (posicion.y <= (DISTJARDIN + 142))){
+    if ((y >= DISTJARDIN) && (y <= (DISTJARDIN + 142))){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else if ((posicion.y > (DISTJARDIN + 142)) && (posicion.y <= (DISTJARDIN + 142*2))){
+    if ((y > (DISTJARDIN + 142)) && (y <= (DISTJARDIN + 142*2))){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else if ((posicion.y > (DISTJARDIN + 142*2)) && (posicion.y <= (DISTJARDIN + 142*3))){
+    if ((y > (DISTJARDIN + 142*2)) && (y <= (DISTJARDIN + 142*3))){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else {
+    return true;
   }
 }
 
