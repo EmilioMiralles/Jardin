@@ -16,6 +16,9 @@
 #define L2 200
 #define L3 100
 
+#define vel_min 90
+#define vel_max 255
+
 #define DISTJARDIN  190
 
 struct coordenadas{
@@ -39,9 +42,9 @@ private:
   referencia ref;
   
   coordenadas p[2];         //Puntos del movimiento que se tomarán en la trayectoria entre dos puntos.
+  motor m2;                 //Motor que mueve la primera articulacion del robot
 
   motor m1;                 //Motor que mueve la parte cartesiana del robot
-  motor m2;                 //Motor que mueve la primera articulacion del robot
   motor m3;                 //Motor que miueve la segunda articulacion del robot
 
   int bandera[1];           //Indica en que posicion se encuentra dentro de la trayectoria. Los valores (0, 0) , (0, 1) , (1, 0) y (1, 1) indican la posicion de la que parten en la trayectoria
@@ -60,6 +63,8 @@ public:
 
   void Trayectoria();
   bool mismonivel(float y);
+  void calculoVelocidades(referencia po, referencia pf);
+  
 
   void mueve();
 };
