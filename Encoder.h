@@ -16,6 +16,7 @@ private:
   int i;      //Usado para que no cuente más vueltas de las debidas en contadorMemoria();
 public:
   void contadorMemoria();
+  void restadorMemoria();
   void reset();
   void setPin(int p);
   void setBandera();

@@ -49,11 +49,17 @@ void motor::setVelocidad(float a){
 void motor::avanzar(){
     digitalWrite(pin_at, LOW);
     digitalWrite(pin_ad, HIGH);
+    if (!tipo){
+      encod.contadorMemoria();
+    }
 }
 
 void motor::retroceder(){
   digitalWrite(pin_at, HIGH);
   digitalWrite(pin_ad, LOW);
+  if(!tipo){
+    encod.restadorMemoria();
+  }
 }
 
 void motor::parar(){
