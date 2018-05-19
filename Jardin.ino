@@ -25,6 +25,6 @@ void setup() {
 }
 
 void loop() {
-
   interfaz.interaccionInterfaz();
+  interfaz.mueve();
 }
