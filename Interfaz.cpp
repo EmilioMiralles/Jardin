@@ -207,6 +207,7 @@ void Interfaz::inicializar(){
   m3.setPines(26,27,4);
   m3.pot.setpin(A2);
   m3.pot.setLimites(0,1023);
+  m3.setEndstop(A3);
 }
 
 void Interfaz::mueve(){
@@ -340,5 +341,10 @@ void Interfaz::calculoVelocidades(referencia po, referencia pf){
     if (vel_aux <= vel_min) vel_aux = vel_min;
     m3.setVelocidad(vel_aux);
   }
+}
+
+
+void Interfaz::endstop(){
+  m1.endstop();
 }
 

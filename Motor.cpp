@@ -88,3 +88,23 @@ bool motor::getTipo(){
   return tipo;
 }
 
+void motor::setEndstop(int a){
+  pinMode(a, INPUT);
+  pin_endstop = a;
+}
+
+void motor::endstop(){
+  int aux = digitalRead(pin_endstop);
+  motor::setVelocidad(120);
+  
+  do{
+    digitalWrite(pin_at, LOW);
+    digitalWrite(pin_ad, HIGH);
+  }while(!aux);
+
+  digitalWrite(pin_at, LOW);
+  digitalWrite(pin_ad, LOW);
+
+  encod.reset();
+}
+
