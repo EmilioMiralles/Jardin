@@ -196,15 +196,17 @@ bool Interfaz::mismonivel(float y){
 void Interfaz::inicializar(){
   m1.setTipo(false);
   m1.setPines(22,23,2);       //pines del primer motor
-  m1.setVelocidad(90);        //Señal PWM transmitida al controlador L298N
   m1.setAvance(44);           //Seteamos el avance del motor en una vuelta para calcular la posicion
   m1.encod.setPin(A0);        //Pin del sensor del encoder
   m1.encod.setBandera();
   m2.setTipo(true);
   m2.setPines(24,25,3);
-  m2.setVelocidad(120);
   m2.pot.setpin(A1);
   m2.pot.setLimites(0, 1023);
+  m3.setTipo(true);
+  m3.setPines(26,27,4);
+  m3.pot.setpin(A2);
+  m3.pot.setLimites(0,1023);
 }
 
 void Interfaz::mueve(){
