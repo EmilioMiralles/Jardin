@@ -15,6 +15,7 @@ void Potenciometro::setPorcent_seguridad(float a){
 }
 
 void Potenciometro::setpin(int a){
+  pinMode(a, INPUT);
   pin = a;
 }
 

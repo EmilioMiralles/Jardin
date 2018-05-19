@@ -55,6 +55,7 @@ public:
   void imprimirInterfaz();          //Imprime la interfaz
   void interaccionInterfaz();       //Lee los datos introducidos por Serial
   void inicializar();
+  void endstop();
   
   coordenadas getPosicion();
 
