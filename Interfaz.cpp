@@ -217,7 +217,7 @@ void Interfaz::mueve(){
   if ((!bandera[0]) && (!bandera[1])){
     p_f = Interfaz::cinInversa(p[1]);
     
-    //Interfaz::calculoVelocidades(p_o, p_f, m1, m2, m3);
+    Interfaz::calculoVelocidades(p_o, p_f);
 
     if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanzar();    b1=false;}
     else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retroceder(); b1=false;}
@@ -234,13 +234,16 @@ void Interfaz::mueve(){
     if((b1)&&(b2)&&(b3)){
       bandera[0]=false;
       bandera[1]=true;
+      b1 = false;
+      b2 = false;
+      b3 = false;
     }
   }
 
   else if ((!bandera[0]) && (bandera[1])){
     p_f = Interfaz::cinInversa(p[2]);
     
-    //Interfaz::calculoVelocidades(p_o, p_f, m1, m2, m3);
+    Interfaz::calculoVelocidades(p_o, p_f);
 
     if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanzar();    b1=false;}
     else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retroceder(); b1=false;}
@@ -257,13 +260,16 @@ void Interfaz::mueve(){
     if((b1)&&(b2)&&(b3)){
       bandera[0]=true;
       bandera[1]=false;
+      b1 = false;
+      b2 = false;
+      b3 = false;
     }
   }
 
   else if ((bandera[0]) && (!bandera[1])){
     p_f = Interfaz::cinInversa(posicion_final);
     
-    //Interfaz::calculoVelocidades(p_o, p_f, m1, m2, m3);
+    Interfaz::calculoVelocidades(p_o, p_f);
 
     if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanzar();    b1=false;}
     else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retroceder(); b1=false;}
@@ -280,7 +286,57 @@ void Interfaz::mueve(){
     if((b1)&&(b2)&&(b3)){
       bandera[0]=true;
       bandera[1]=true;
+      b1 = false;
+      b2 = false;
+      b3 = false;
     }
+  }
+
+  else if ((bandera[0]) && (bandera[1])){
+    m1.parar();
+    m2.parar();
+    m3.parar();
+  }
+}
+
+
+void Interfaz::calculoVelocidades(referencia po, referencia pf){
+  float vel_aux;
+  float dif_ang1, dif_ang2, rel_vel;
+
+  float distancia_x = pf.Rx - po.Rx;
+  if (distancia_x < 0)  distancia_x = -distancia_x;
+
+  if (distancia_x > 500){
+    m1.setVelocidad(vel_max);
+  }
+  
+  else if (distancia_x <=500){
+    vel_aux = (distancia_x/500)*255;
+    if (vel_aux <= vel_min) vel_aux = vel_min;
+    m1.setVelocidad(vel_aux);
+  }
+
+  dif_ang1 = pf.Ang1 - po.Ang1;
+    if(dif_ang1 < 0)  dif_ang1 = -dif_ang1;
+  dif_ang2 = pf.Ang2 - po.Ang2;
+    if(dif_ang2 < 0)  dif_ang2 = -dif_ang2;
+  rel_vel = dif_ang1 / dif_ang2;
+
+  if(dif_ang1 > 45){
+    m2.setVelocidad(vel_max);
+    vel_aux = vel_max / (rel_vel * 3.33);
+    if (vel_aux <= vel_min) vel_aux = vel_min;
+    m3.setVelocidad(vel_aux);
+  }
+  
+  else if (dif_ang1 <= 45){
+    vel_aux = (dif_ang1/45)*255;
+    if (vel_aux <= vel_min) vel_aux = vel_min;
+    m2.setVelocidad(vel_aux);
+    vel_aux = vel_aux / (rel_vel * 3.33);
+    if (vel_aux <= vel_min) vel_aux = vel_min;
+    m3.setVelocidad(vel_aux);
   }
 }
 

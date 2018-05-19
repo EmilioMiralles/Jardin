@@ -41,7 +41,7 @@ float motor::getFeedback(){
   }
 }
 
-void motor::setVelocidad(int a){
+void motor::setVelocidad(float a){
   velocidad = a;
   analogWrite(pin_pwm, velocidad);
 }
