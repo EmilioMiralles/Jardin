@@ -11,6 +11,7 @@
 #include "Arduino.h"
 #include "Motor.h"
 #include "Math.h"
+#include "Servo.h"
 
 #define L1 252
 #define L2 200
@@ -43,9 +44,13 @@ private:
   
   coordenadas p[2];         //Puntos del movimiento que se tomarán en la trayectoria entre dos puntos.
   motor m2;                 //Motor que mueve la primera articulacion del robot
-
   motor m1;                 //Motor que mueve la parte cartesiana del robot
   motor m3;                 //Motor que miueve la segunda articulacion del robot
+
+  Servo servo1, servo2;
+  int herramienta;
+  
+  const int tiempoAntirebote = 10;
 
   int bandera[1];           //Indica en que posicion se encuentra dentro de la trayectoria. Los valores (0, 0) , (0, 1) , (1, 0) y (1, 1) indican la posicion de la que parten en la trayectoria
 
@@ -56,18 +61,31 @@ public:
   void interaccionInterfaz();       //Lee los datos introducidos por Serial
   void inicializar();
   void endstop();
+
+  void InicializarServos (int pin_servo1, int pin_servo2);
+  void cambiarHerramienta ();
+  void MovServo();
+  void MovEjex();
+  void MovEje1();
+  void MovEje2();
+  void MovEje3();
+  void Parada();
+  void SetPosicion(coordenadas punto_f);
+  void SetPosicion(float x, float y);
   
   coordenadas getPosicion();
+  coordenadas cinDirecta(referencia r);
 
   referencia getFeedback();
   referencia cinInversa(coordenadas coor);
 
   void Trayectoria();
   bool mismonivel(float y);
+  float calculoAltura(float a);
   void calculoVelocidades(referencia po, referencia pf);
   
-
   void mueve();
+  void mueve(referencia a);
 };
   
 #endif

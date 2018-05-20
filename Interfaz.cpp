@@ -39,48 +39,75 @@ void Interfaz::imprimirInterfaz(){
 }
 
 void Interfaz::interaccionInterfaz(){
-  if(Serial.available() > 0){
-      char pal = Serial.read();
-      int v = Serial.parseInt();
+  char pal;
+  int v;
   
-      /*switch(pal){
-        case 'v':
-        case 'V':  a.setVelocidad(v);
-                   Serial.print("La velocidad se ha establecido en:  ");
-                   a.imprimirVel();
-                   Serial.println();
-                   break;
-        case 'a':
-        case 'A':  a.setAvance(v);
-                   Serial.print("El avance del motor se ha establecido en ");
-                   a.imprimirAv();
-                   Serial.println();
-                   break;
-        case 'r':
-        case 'R':  a.encod.reset();
-                   a.getFeedback();
-                   Serial.println("La posición actual se ha establecido como home.");
-                   Serial.println();
-                   break;
-        case 'c':
-        case 'C':  coordenadas = v;
-                   Serial.println("Coordenadas actualizadas");
-                   Serial.println();
-                   break;
-        case 'p':   
-        case 'P':  Serial.print("La memoria y las vueltas del encoder son:  ");
-                   a.encod.imprimir();
-                   Serial.print("Y, por tanto, la posición es:  ");
-                   a.imprimirFeedback();
-                   Serial.println();
-                   break;
-        case 't':
-        case 'T':  imprimirInterfaz(a, b);
-                   break;
-        default:   Serial.println("ERROR. El comando introducido no es correcto.");
-                   Serial.println();
-      }*/
-    }
+  if(Serial.available() > 0){
+      pal = Serial.read();
+      v = Serial.parseInt();
+  }
+  if (pal == '$')
+  {
+    switch(v){
+        case '1':
+            break;
+        case '2':
+            break;
+        case '3':
+            break;
+        case '4':
+            break;
+        case '5':
+            break;
+        case '6':
+            break;
+        case '7':
+            Parada(); 
+            break;
+        case '11': 
+            MovEje1 (); 
+            break;
+        case '12': 
+            MovEje2 (); 
+            break;
+        case '13': 
+            MovEje3 ();
+            break;
+        case '14': 
+            MovServo();
+            break;
+        case '15':
+            //MovServo();           //IMPLEMENTAR SEGUNDO SERVO
+            break;
+        case '16': 
+            coordenadas aux;
+            SetPosicion (aux);
+            bandera[0]=false;
+            bandera[1]=false; 
+            break;
+        case '17': 
+            float a, b;
+            SetPosicion (a, b);
+            bandera[0]=false;
+            bandera[1]=false;
+            break;
+        case '20': 
+            cambiarHerramienta(); 
+            break;
+        case '31': 
+            m1.imprimirVel();
+            break;
+        case '32': 
+            m2.imprimirVel();
+            break;
+        case '33': 
+            m3.imprimirVel();
+            break;
+        case '34': 
+            m1.imprimirAv();
+            break;
+        }
+   }   
 }
 
 coordenadas Interfaz::getPosicion(){
@@ -208,6 +235,7 @@ void Interfaz::inicializar(){
   m3.pot.setpin(A2);
   m3.pot.setLimites(0,1023);
   m3.setEndstop(A3);
+  Interfaz::InicializarServos(9,10);
 }
 
 void Interfaz::mueve(){
@@ -303,6 +331,27 @@ void Interfaz::mueve(){
 }
 
 
+void Interfaz::mueve(referencia a){
+
+  referencia p_o = Interfaz::getFeedback();
+  referencia p_f = a;
+
+  Interfaz::calculoVelocidades(p_o, p_f);
+
+  if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanzar();}
+  else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retroceder();}
+  else if ((p_o.Rx >= p_f.Rx*(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))  {m1.parar();}
+
+  if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {m2.avanzar();}
+  else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {m2.retroceder();}
+  else if ((p_o.Ang1 >= p_f.Ang1*(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))  {m2.parar();}
+
+  if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {m3.avanzar();}
+  else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {m3.retroceder();}
+  else if ((p_o.Ang2 >= p_f.Ang2*(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))  {m3.parar();}
+}
+
+
 void Interfaz::calculoVelocidades(referencia po, referencia pf){
   float vel_aux;
   float dif_ang1, dif_ang2, rel_vel;
@@ -346,5 +395,144 @@ void Interfaz::calculoVelocidades(referencia po, referencia pf){
 
 void Interfaz::endstop(){
   m1.endstop();
+}
+
+
+void Interfaz::InicializarServos (int pin_servo1, int pin_servo2) {
+  servo1.attach(pin_servo1);
+  servo1.write(0);
+  servo2.attach(pin_servo2);
+  servo2.write(0);
+}
+
+
+void Interfaz::cambiarHerramienta () {
+  herramienta = Serial.parseInt();
+  switch (herramienta) {
+    case '1': 
+      servo2.write(0); 
+      break;
+    case '2': 
+      servo2.write(60); 
+      break;
+    case '3': 
+      servo2.write(120); 
+      break;
+    case '4': 
+      servo2.write(180); 
+      break;
+    default:
+      servo2.write(0);
+    }
+}
+
+void Interfaz::MovServo () {
+  int valor;
+  valor = Serial.parseInt();
+  servo1.write(valor);
+ }
+
+void Interfaz::MovEje1(){
+  referencia aux;
+  coordenadas p_f;
+  aux = Interfaz::getFeedback();
+
+  aux.Ang1 += 5;
+  
+  p_f = cinDirecta(aux);
+  posicion_final = p_f;
+  
+  bandera[0]=true;
+  bandera[1]=false;
+}
+
+void Interfaz::MovEje2(){
+  referencia aux;
+  coordenadas p_f;
+  aux = Interfaz::getFeedback();
+
+  aux.Ang2 += 5;
+  
+  p_f = cinDirecta(aux);
+  posicion_final = p_f;
+  
+  bandera[0]=true;
+  bandera[1]=false;
+}
+
+void Interfaz::MovEjex(){
+  referencia aux;
+  coordenadas p_f;
+  aux = Interfaz::getFeedback();
+
+  aux.Rx += 20;
+  
+  p_f = cinDirecta(aux);
+  posicion_final = p_f;
+  
+  bandera[0]=true;
+  bandera[1]=false;
+}
+
+void Interfaz::MovEje3(){
+  referencia aux;
+  aux = Interfaz::getFeedback();
+
+  aux.Ang3 += 5;
+  servo1.write(aux.Ang3);
+}
+
+void Interfaz::Parada(){
+  posicion_final = Interfaz::cinDirecta(Interfaz::getFeedback());
+}
+
+void Interfaz::SetPosicion(coordenadas punto_f) {
+  punto_f.x = Serial.parseFloat();
+  punto_f.y = Serial.parseFloat();
+  punto_f.z = Serial.parseFloat();
+  posicion_final = punto_f;  
+} 
+
+void Interfaz::SetPosicion(float x, float y){
+  float z;
+  
+  x = Serial.parseFloat();
+  y = Serial.parseFloat();
+  z = Interfaz::calculoAltura(y);
+  posicion_final.x = x;
+  posicion_final.y = y;
+  posicion_final.z = z;
+}
+
+float Interfaz::calculoAltura(float a){
+  float z;
+  
+  if ((a >= DISTJARDIN) && (a <= (DISTJARDIN + 142))){
+    z = 110;
+    return z;
+  }
+  else if ((a > (DISTJARDIN + 142)) && (a <= (DISTJARDIN + 142*2))){
+    z = 160;
+    return z;
+  }
+  else if ((a > (DISTJARDIN + 142*2)) && (a <= (DISTJARDIN + 142*3))){
+    z = 210;
+    return z;
+  }
+  else {
+    z = 210;
+    return z;
+  }
+}
+
+
+coordenadas Interfaz::cinDirecta(referencia r){
+  coordenadas pos;
+  
+  pos.x = r.Rx;
+  pos.y = L1*cos(r.Ang1) + L2*cos(r.Ang1+r.Ang2-90) + L3;
+  pos.z = L1*sin(r.Ang1) + L2*sin(r.Ang1+r.Ang2-90) + 163;
+
+  return pos;
 }
 
