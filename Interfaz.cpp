@@ -176,7 +176,8 @@ referencia Interfaz::cinInversa (coordenadas coord){
 
 void Interfaz::Trayectoria(){ 
   if (Interfaz::mismonivel(posicion_final.y)) {
-    p[0]=p[1]=p[2]=posicion;
+    bandera[0] = true;
+    bandera[1] = false;
   }
 
   else if(!(Interfaz::mismonivel(posicion_final.y))) {
@@ -186,6 +187,8 @@ void Interfaz::Trayectoria(){
     p[2] = p[1];
     p[2].z = p[1].z - 50;
     p[2].y = posicion_final.y;
+    bandera[0] = false;
+    bandera[1] = false;
   }
 }
 
@@ -221,21 +224,22 @@ bool Interfaz::mismonivel(float y){
 }
 
 void Interfaz::inicializar(){
-  m1.setTipo(false);
-  m1.setPines(22,23,2);       //pines del primer motor
-  m1.setAvance(44);           //Seteamos el avance del motor en una vuelta para calcular la posicion
-  m1.encod.setPin(A0);        //Pin del sensor del encoder
-  m1.encod.setBandera();
-  m2.setTipo(true);
-  m2.setPines(24,25,3);
-  m2.pot.setpin(A1);
-  m2.pot.setLimites(0, 1023);
-  m3.setTipo(true);
-  m3.setPines(26,27,4);
-  m3.pot.setpin(A2);
-  m3.pot.setLimites(0,1023);
-  m3.setEndstop(A3);
-  Interfaz::InicializarServos(9,10);
+  m1.setTipo(false);                    //Motor controlador por encoder
+  m1.setPines(22,23,2);                 //pines del primer motor
+  m1.setAvance(38);                     //Seteamos el avance del motor en una vuelta para calcular la posicion
+  m1.encod.setPin(A0);                  //Pin del sensor del encoder
+  m1.encod.setBandera();                //Inicializamos la bandera
+  m1.setPosicion(5000);                 //Inicializamos una posicion de 5000 para que se realice un homing
+  m2.setTipo(true);                     //Motor controlado por potenciometro
+  m2.setPines(24,25,3);                 //Pines del segundo motor
+  m2.pot.setpin(A1);                    //Pin del potenciometro
+  m2.pot.setLimites(0, 1023);           //Limites de la lectura del potenciometro
+  m3.setTipo(true);                     //Motor controlado por potenciometro
+  m3.setPines(26,27,4);                 //Pines del tercer motor
+  m3.pot.setpin(A2);                    //Pin del potenciometro
+  m3.pot.setLimites(0,1023);            //Limites de la lectura del potenciometro
+  Interfaz::InicializarServos(9,10);    //Se inicializan los pines en los que se controlan los servos
+  Interfaz::setPin_fdc(30);             //Pin del final de carrera usado para el homing
 }
 
 void Interfaz::mueve(){
@@ -331,24 +335,18 @@ void Interfaz::mueve(){
 }
 
 
-void Interfaz::mueve(referencia a){
+void Interfaz::mueveDirecto(referencia a){
+  bandera[0] = true;
+  bandera[1] = false;
 
-  referencia p_o = Interfaz::getFeedback();
-  referencia p_f = a;
+  posicion_final = cinDirecta(a);
+}
 
-  Interfaz::calculoVelocidades(p_o, p_f);
+void Interfaz::mueveDirecto(coordenadas a){
+  bandera[0] = true;
+  bandera[1] = false;
 
-  if(p_o.Rx < p_f.Rx*(1-margen))                                            {m1.avanzar();}
-  else if (p_o.Rx > p_f.Rx*(1+margen))                                      {m1.retroceder();}
-  else if ((p_o.Rx >= p_f.Rx*(1-margen)) && (p_o.Rx <= p_f.Rx*(1+margen)))  {m1.parar();}
-
-  if(p_o.Ang1 < p_f.Ang1*(1-margen))                                                {m2.avanzar();}
-  else if (p_o.Ang1 > p_f.Ang1*(1+margen))                                          {m2.retroceder();}
-  else if ((p_o.Ang1 >= p_f.Ang1*(1-margen)) && (p_o.Ang1 <= p_f.Ang1*(1+margen)))  {m2.parar();}
-
-  if(p_o.Ang2 < p_f.Ang2*(1-margen))                                                {m3.avanzar();}
-  else if (p_o.Ang2 > p_f.Ang2*(1+margen))                                          {m3.retroceder();}
-  else if ((p_o.Ang2 >= p_f.Ang2*(1-margen)) && (p_o.Ang2 <= p_f.Ang2*(1+margen)))  {m3.parar();}
+  posicion_final = a;
 }
 
 
@@ -390,11 +388,6 @@ void Interfaz::calculoVelocidades(referencia po, referencia pf){
     if (vel_aux <= vel_min) vel_aux = vel_min;
     m3.setVelocidad(vel_aux);
   }
-}
-
-
-void Interfaz::endstop(){
-  m1.endstop();
 }
 
 
@@ -534,5 +527,32 @@ coordenadas Interfaz::cinDirecta(referencia r){
   pos.z = L1*sin(r.Ang1) + L2*sin(r.Ang1+r.Ang2-90) + 163;
 
   return pos;
+}
+
+
+void Interfaz::homing(){
+  referencia aux;
+
+  aux.Rx = 0;
+  aux.Ang1 = 120;
+  aux.Ang2 = -30;
+  aux.Ang3 = 0;
+
+  Interfaz::mueveDirecto(aux);
+}
+
+void Interfaz::setPin_fdc(int a){
+  pin_fdc = a;
+  pinMode(pin_fdc, INPUT_PULLUP);
+}
+
+void Interfaz::finaldecarrera(){
+  bool aux;
+
+  aux = digitalRead(pin_fdc);
+
+  if (aux){
+    m1.reset();
+  }
 }
 

@@ -21,11 +21,12 @@ void setup() {
   Serial.begin(9600);
 
   interfaz.inicializar();
-  interfaz.endstop();
+  interfaz.homing();
   interfaz.imprimirInterfaz();         //Imprimimos la interfaz con la que se trabajará
 }
 
 void loop() {
   interfaz.interaccionInterfaz();
+  interfaz.finaldecarrera();
   interfaz.mueve();
 }

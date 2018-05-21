@@ -43,16 +43,19 @@ private:
   referencia ref;
   
   coordenadas p[2];         //Puntos del movimiento que se tomarán en la trayectoria entre dos puntos.
+  
   motor m2;                 //Motor que mueve la primera articulacion del robot
   motor m1;                 //Motor que mueve la parte cartesiana del robot
   motor m3;                 //Motor que miueve la segunda articulacion del robot
+
+  int pin_fdc;
 
   Servo servo1, servo2;
   int herramienta;
   
   const int tiempoAntirebote = 10;
 
-  int bandera[1];           //Indica en que posicion se encuentra dentro de la trayectoria. Los valores (0, 0) , (0, 1) , (1, 0) y (1, 1) indican la posicion de la que parten en la trayectoria
+  bool bandera[1];           //Indica en que posicion se encuentra dentro de la trayectoria. Los valores (0, 0) , (0, 1) , (1, 0) y (1, 1) indican la posicion de la que parten en la trayectoria
 
   float margen = 0.05;      //Margen de error para que se alcance la posicion
 
@@ -60,7 +63,6 @@ public:
   void imprimirInterfaz();          //Imprime la interfaz
   void interaccionInterfaz();       //Lee los datos introducidos por Serial
   void inicializar();
-  void endstop();
 
   void InicializarServos (int pin_servo1, int pin_servo2);
   void cambiarHerramienta ();
@@ -85,7 +87,12 @@ public:
   void calculoVelocidades(referencia po, referencia pf);
   
   void mueve();
-  void mueve(referencia a);
+  void mueveDirecto(referencia a);
+  void mueveDirecto(coordenadas a);
+
+  void homing();
+  void finaldecarrera();
+  void setPin_fdc(int a);
 };
   
 #endif
