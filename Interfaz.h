@@ -12,6 +12,7 @@
 #include "Motor.h"
 #include "Math.h"
 #include "Servo.h"
+#include "PwmClass.h"
 
 #define L1 252
 #define L2 200
@@ -49,6 +50,11 @@ private:
 
   Servo servo1, servo2;
   int herramienta;
+
+  PWMClass bomba;
+  PWMClass corte;
+  PWMClass ventilador;
+  PWMClass leds;
   
   const int tiempoAntirebote = 10;
 
