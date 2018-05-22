@@ -28,7 +28,7 @@ public:
   void setPines(int a, int b, int c);
   void setAvance(float a);                //El valor que introduciremos de a será el valor del avance del motor por 1 vuelta
   float getFeedback();                    //En milimetros
-  void setVelocidad(float a);
+  void setVelocidad(int a);
   void reset();
   void setPosicion(float a);
   

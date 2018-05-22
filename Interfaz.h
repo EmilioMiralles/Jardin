@@ -51,7 +51,7 @@ private:
   int pin_fdc;
 
   Servo servo1, servo2;
-  int herramienta;
+  int ref_herramienta;
   
   const int tiempoAntirebote = 10;
 
@@ -63,14 +63,16 @@ public:
   void imprimirInterfaz();          //Imprime la interfaz
   void interaccionInterfaz();       //Lee los datos introducidos por Serial
   void inicializar();
+  
+  void cambiarHerramienta (int a);
+  void setRef_herramienta(int a);
+  void mueveHerramienta();
 
   void InicializarServos (int pin_servo1, int pin_servo2);
-  void cambiarHerramienta ();
   void MovServo();
-  void MovEjex();
-  void MovEje1();
-  void MovEje2();
-  void MovEje3();
+  void MovEjex(int a);
+  void MovEje1(int a);
+  void MovEje2(int a);
   void Parada();
   void SetPosicion(coordenadas punto_f);
   void SetPosicion(float x, float y);
@@ -93,6 +95,8 @@ public:
   void homing();
   void finaldecarrera();
   void setPin_fdc(int a);
+
+  void corrigeAngulo();
 };
   
 #endif

@@ -26,7 +26,9 @@ void setup() {
 }
 
 void loop() {
-  interfaz.interaccionInterfaz();
+  interfaz.interaccionInterfaz();         //ARREGLAR EL CODIGO DE INTERACCION PARA QUE LEA LOS COMANDOS QUE SE ENVIAN
   interfaz.finaldecarrera();
   interfaz.mueve();
+  interfaz.corrigeAngulo();
+  interfaz.mueveHerramienta();
 }
