@@ -12,6 +12,7 @@
 #include "Motor.h"
 #include "Math.h"
 #include "Servo.h"
+#include "PwmClass.h"
 
 #define L1 252
 #define L2 200
@@ -51,7 +52,15 @@ private:
   int pin_fdc;
 
   Servo servo1, servo2;
+
   int ref_herramienta;
+
+  int herramienta;
+
+  PWMClass bomba;
+  PWMClass corte;
+  PWMClass ventilador;
+  PWMClass leds;
   
   const int tiempoAntirebote = 10;
 
