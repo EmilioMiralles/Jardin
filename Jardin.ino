@@ -21,11 +21,14 @@ void setup() {
   Serial.begin(9600);
 
   interfaz.inicializar();
-  interfaz.endstop();
+  interfaz.homing();
   interfaz.imprimirInterfaz();         //Imprimimos la interfaz con la que se trabajará
 }
 
 void loop() {
-  interfaz.interaccionInterfaz();
+  interfaz.interaccionInterfaz();         //ARREGLAR EL CODIGO DE INTERACCION PARA QUE LEA LOS COMANDOS QUE SE ENVIAN
+  interfaz.finaldecarrera();
   interfaz.mueve();
+  interfaz.corrigeAngulo();
+  interfaz.mueveHerramienta();
 }
