@@ -6,22 +6,11 @@
 #ifndef INTERFAZ_H
 #define INTERFAZ_H
 
-#define pi 3.1416
-
 #include "Arduino.h"
 #include "Motor.h"
 #include "Math.h"
 #include "Servo.h"
 #include "PwmClass.h"
-
-#define L1 252
-#define L2 200
-#define L3 100
-
-#define vel_min 90
-#define vel_max 255
-
-#define DISTJARDIN  190
 
 struct coordenadas{
   float x;
@@ -40,11 +29,13 @@ class Interfaz{
 private:
   coordenadas posicion;     //Actualmente la coordenada se trata de un único dato puesto que se está modelando un unico motor
                             //Más adelante se podrá modificar esta variable de forma que coordenadas se trate de una estructura de 3 coordenadas
+  
   coordenadas posicion_final;
+  coordenadas posicion_cons;
   
-  referencia ref;
-  
-  coordenadas p[2];         //Puntos del movimiento que se tomarán en la trayectoria entre dos puntos.
+  referencia referencia_final;
+  referencia referencia_actual;
+  referencia punto_seguro;
   
   motor m2;                 //Motor que mueve la primera articulacion del robot
   motor m1;                 //Motor que mueve la parte cartesiana del robot
@@ -67,47 +58,53 @@ private:
 
   bool bandera[1];           //Indica en que posicion se encuentra dentro de la trayectoria. Los valores (0, 0) , (0, 1) , (1, 0) y (1, 1) indican la posicion de la que parten en la trayectoria
 
-  float margen = 0.05;      //Margen de error para que se alcance la posicion
+  float margen = 0.01;         //Margen de error para que se alcance la posicion
+
+  float DISTJARDIN  = 190;
+
+  float L1 = 252;
+  float L2 = 200;
+  float L3 = 100;
+  
+  float pi = 3.1416;
+  
+  float vel_min = 130;
+  float vel_max = 250;
 
 public:
   void imprimirInterfaz();          //Imprime la interfaz
   void interaccionInterfaz();       //Lee los datos introducidos por Serial
   void inicializar();
+  void setPunto_seguro(float a, float b);
   
   void cambiarHerramienta (int a);
   void setRef_herramienta(int a);
   void mueveHerramienta();
 
+  void mueve();
+
   void InicializarServos (int pin_servo1, int pin_servo2);
-  void MovServo();
-  void MovEjex(int a);
-  void MovEje1(int a);
-  void MovEje2(int a);
-  void Parada();
   void SetPosicion(coordenadas punto_f);
-  void SetPosicion(float x, float y);
+  void SetPosicion(float a, float b);
   
-  void getPosicion();
+  coordenadas getPosicion();
   coordenadas cinDirecta(referencia r);
+  void actualizaPosicion();
 
   referencia getFeedback();
   referencia cinInversa(coordenadas coor);
 
-  void Trayectoria();
   bool mismonivel(float y);
   float calculoAltura(float a);
   void calculoVelocidades(referencia po, referencia pf);
-  
-  void mueve();
-  void mueveDirecto(referencia a);
-  void mueveDirecto(coordenadas a);
 
   void homing();
   void finaldecarrera();
   void setPin_fdc(int a);
 
   void corrigeAngulo();
-  void imprimepruebas();
+
+  void imprimeMierda();
 };
   
 #endif

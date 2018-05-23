@@ -96,6 +96,5 @@ void motor::reset(){
 
 void motor::setPosicion(float a){
   posicion = a;
-  encod.setVueltas(5000);
 }
 
