@@ -10,17 +10,16 @@
 
 class Potenciometro{
   private:
-    float limite_inferior;
-    float limite_superior;
     float angulo;
     float porcent_seguridad;
     int pin;
+    float valor;
     
   public:
-    void setLimites(float a, float b);
     float getAngulo();
     void setPorcent_seguridad(float a);
     void setpin(int a);
+    void setValor(float a);
 };
 
 

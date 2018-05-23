@@ -5,11 +5,6 @@
 
  #include "Potenciometro.h"
 
- void Potenciometro::setLimites(float a, float b){
-  limite_inferior = a;
-  limite_superior = b;
- }
-
 void Potenciometro::setPorcent_seguridad(float a){
   porcent_seguridad = a;
 }
@@ -21,7 +16,12 @@ void Potenciometro::setpin(int a){
 
 float Potenciometro::getAngulo(){
   float lectura = analogRead(pin);
-  angulo = ((lectura-limite_inferior)/(limite_superior-limite_inferior))*155 + 12.5;
+  angulo = ((lectura)/(1023))*155 + valor;
+  
   return angulo;
+}
+
+void Potenciometro::setValor(float a){
+  valor = a;
 }
 

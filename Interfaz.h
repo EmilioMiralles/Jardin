@@ -41,6 +41,7 @@ private:
   coordenadas posicion;     //Actualmente la coordenada se trata de un único dato puesto que se está modelando un unico motor
                             //Más adelante se podrá modificar esta variable de forma que coordenadas se trate de una estructura de 3 coordenadas
   coordenadas posicion_final;
+  
   referencia ref;
   
   coordenadas p[2];         //Puntos del movimiento que se tomarán en la trayectoria entre dos puntos.
@@ -86,7 +87,7 @@ public:
   void SetPosicion(coordenadas punto_f);
   void SetPosicion(float x, float y);
   
-  coordenadas getPosicion();
+  void getPosicion();
   coordenadas cinDirecta(referencia r);
 
   referencia getFeedback();
@@ -106,6 +107,7 @@ public:
   void setPin_fdc(int a);
 
   void corrigeAngulo();
+  void imprimepruebas();
 };
   
 #endif

@@ -69,3 +69,7 @@ int encoder::getVueltas(){
   return vueltas;
 }
 
+void encoder::setVueltas(int a){
+  vueltas = a;
+}
+

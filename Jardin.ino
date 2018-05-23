@@ -26,9 +26,12 @@ void setup() {
 }
 
 void loop() {
+  interfaz.getPosicion();
   interfaz.interaccionInterfaz();         //ARREGLAR EL CODIGO DE INTERACCION PARA QUE LEA LOS COMANDOS QUE SE ENVIAN
   interfaz.finaldecarrera();
   interfaz.mueve();
-  interfaz.corrigeAngulo();
-  interfaz.mueveHerramienta();
+  //interfaz.corrigeAngulo();
+  //interfaz.mueveHerramienta();
+
+  interfaz.imprimepruebas();
 }
