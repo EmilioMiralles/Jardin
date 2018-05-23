@@ -38,6 +38,7 @@ float motor::getFeedback(){
   }
   else if(tipo){
     angulo = pot.getAngulo();
+    return angulo;
   }
 }
 
@@ -95,5 +96,6 @@ void motor::reset(){
 
 void motor::setPosicion(float a){
   posicion = a;
+  encod.setVueltas(a);
 }
 

@@ -106,6 +106,9 @@ public:
   void setPin_fdc(int a);
 
   void corrigeAngulo();
+  void actualizaPosicion();
+
+  void imprimeMierda();
 };
   
 #endif

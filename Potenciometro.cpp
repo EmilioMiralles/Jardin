@@ -21,7 +21,11 @@ void Potenciometro::setpin(int a){
 
 float Potenciometro::getAngulo(){
   float lectura = analogRead(pin);
-  angulo = ((lectura-limite_inferior)/(limite_superior-limite_inferior))*155 + 12.5;
+  angulo = ((lectura-limite_inferior)/(limite_superior-limite_inferior))*155 + valor;
   return angulo;
+}
+
+void Potenciometro::setValor(float a){
+  valor = a;
 }
 

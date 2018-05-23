@@ -23,6 +23,7 @@ public:
   void imprimir();
   int getMemoria();
   int getVueltas();
+  int setVueltas(int a);
 };
 
 #endif

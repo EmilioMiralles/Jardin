@@ -22,13 +22,16 @@ void setup() {
 
   interfaz.inicializar();
   interfaz.homing();
-  interfaz.imprimirInterfaz();         //Imprimimos la interfaz con la que se trabajará
+  //interfaz.imprimirInterfaz();         //Imprimimos la interfaz con la que se trabajará
 }
 
 void loop() {
-  interfaz.interaccionInterfaz();         //ARREGLAR EL CODIGO DE INTERACCION PARA QUE LEA LOS COMANDOS QUE SE ENVIAN
+  interfaz.actualizaPosicion();
+  //interfaz.interaccionInterfaz();         //ARREGLAR EL CODIGO DE INTERACCION PARA QUE LEA LOS COMANDOS QUE SE ENVIAN
   interfaz.finaldecarrera();
+  interfaz.Trayectoria();
   interfaz.mueve();
   interfaz.corrigeAngulo();
   interfaz.mueveHerramienta();
+  interfaz.imprimeMierda();
 }

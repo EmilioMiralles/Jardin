@@ -146,8 +146,8 @@ coordenadas Interfaz::getPosicion(){
   coordenadas pos;
   
   pos.x = m1.getFeedback();
-  pos.y = L1*cos(m2.getFeedback()) + L2*cos(m2.getFeedback()+m3.getFeedback()-90) + L3;
-  pos.z = L1*sin(m2.getFeedback()) + L2*sin(m2.getFeedback()+m3.getFeedback()-90) + 163;
+  pos.y = L1*cos(m2.getFeedback()*PI/180) + L2*cos(m2.getFeedback()*PI/180+m3.getFeedback()*PI/180-PI/2) + L3;
+  pos.z = L1*sin(m2.getFeedback()*PI/180) + L2*sin(m2.getFeedback()*PI/180+m3.getFeedback()*PI/180-PI/2) + 163;
 
   return pos;
 }
@@ -266,10 +266,12 @@ void Interfaz::inicializar(){
   m2.setPines(24,25,3);                 //Pines del segundo motor
   m2.pot.setpin(A1);                    //Pin del potenciometro
   m2.pot.setLimites(0, 1023);           //Limites de la lectura del potenciometro
+  m2.pot.setValor(12.5);
   m3.setTipo(true);                     //Motor controlado por potenciometro
   m3.setPines(26,27,4);                 //Pines del tercer motor
   m3.pot.setpin(A2);                    //Pin del potenciometro
   m3.pot.setLimites(0,1023);            //Limites de la lectura del potenciometro
+  m3.pot.setValor(-24.5);
   Interfaz::InicializarServos(9,10);    //Se inicializan los pines en los que se controlan los servos
   Interfaz::setPin_fdc(30);             //Pin del final de carrera usado para el homing
   Interfaz::setRef_herramienta(1);
@@ -593,8 +595,8 @@ coordenadas Interfaz::cinDirecta(referencia r){
   coordenadas pos;
   
   pos.x = r.Rx;
-  pos.y = L1*cos(r.Ang1) + L2*cos(r.Ang1+r.Ang2-90) + L3;
-  pos.z = L1*sin(r.Ang1) + L2*sin(r.Ang1+r.Ang2-90) + 163;
+  pos.y = L1*cos(r.Ang1*PI/180) + L2*cos(r.Ang1*PI/180+r.Ang2*PI/180-PI/2) + L3;
+  pos.z = L1*sin(r.Ang1*PI/180) + L2*sin(r.Ang1*PI/180+r.Ang2*PI/180-PI/2) + 163;
 
   return pos;
 }
@@ -654,5 +656,31 @@ void Interfaz::mueveHerramienta(){
       servo2.write(180);
       break; 
   }
+}
+
+
+void Interfaz::actualizaPosicion(){
+  posicion = Interfaz::getPosicion();
+}
+
+
+void Interfaz::imprimeMierda(){
+  /*Serial.print(posicion.x);
+  Serial.print("\t");
+  Serial.print(posicion.y);
+  Serial.print("\t");
+  Serial.print(posicion.z);
+  Serial.print("\t");
+  Serial.print(posicion_final.x);
+  Serial.print("\t");
+  Serial.print(posicion_final.y);
+  Serial.print("\t");
+  Serial.println(posicion_final.z);*/
+
+
+  Serial.print(m2.getFeedback());
+  Serial.print("\t");
+  Serial.println(m3.getFeedback());
+  
 }
 
